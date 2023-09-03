@@ -6,16 +6,27 @@ import numpy as np
 import scipy as sp
 import seaborn as sns
 from PIL import Image
+import matplotlib.pyplot as plt
 import os
 
 vehicle_data = pd.read_csv('vehicles_us.csv')
 
 st.title('Vehicle Data Analysis')
 
-#st.sidebar.header("Settings")
 
-#bins = st.sidebar.slider("Number of Bins", 1, 100, 20)
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
-histo = px.histogram(vehicle_data, x='model')
+select_column = st.selectbox('Select a column', vehicle_data.columns)
 
-st.plotly_chart(histo)
+plt.figure(figsize=(12, 6))
+
+plt.xticks(rotation=45)
+
+sns.histplot(vehicle_data[select_column], kde=True, bins=20)
+st.pyplot()
+
+st.write(f"Statistics for {select_column}:")
+
+st.write(vehicle_data[select_column].describe())
+
+
