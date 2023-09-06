@@ -1,13 +1,6 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
-import plotly as pl
-import numpy as np
-import scipy as sp
-import seaborn as sns
-from PIL import Image
-import matplotlib.pyplot as plt
-import os
 
 vehicle_data = pd.read_csv('vehicles_us.csv')
 new_column_names = {'price': 'Price', 'model_year': 'Model Year', 'model': 'Model', 'condition': 'Condition', 'cylinders': 'Cylinders', 'fuel': 'Fuel',
@@ -27,19 +20,14 @@ if scatterplot_option:
     x_column = st.selectbox('Select x-axis column', vehicle_data.columns)
     y_column = st.selectbox('Select y-axis column', vehicle_data.columns)
 
-    plt.figure(figsize=(12,6))
-    sns.scatterplot(x=x_column, y=y_column, data=vehicle_data)
-    plt.title(f"Scatterplot: {x_column} vs {y_column}")
-    plt.xticks(rotation=45)
-    st.pyplot()
+    fig = px.scatter(vehicle_data, x=x_column, y=y_column, title=f"Scatterplot: {x_column} vs {y_column}")
+    st.plotly_chart(fig)
+
 else:
     st.subheader(f"Histogram for {select_column}")
-    
-    plt.figure(figsize=(16, 6))
-    sns.histplot(vehicle_data[select_column], kde=True, bins=20)
-    plt.title(f"Histogram: {select_column}")
-    st.pyplot()
 
+    fig = px.histogram(vehicle_data, x=select_column, nbins=20, title=f"Histogram: {select_column}")
+    st.plotly_chart(fig)
 
 st.write(f"Statistics for {select_column}:")
 
