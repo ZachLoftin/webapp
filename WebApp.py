@@ -4,6 +4,7 @@ import plotly.express as px
 
 vehicle_data = pd.read_csv('vehicles_us.csv')
 
+@st.cache_data
 def median_value(group):
     return group.fillna(group.median())
 
