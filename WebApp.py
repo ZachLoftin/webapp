@@ -3,6 +3,14 @@ import streamlit as st
 import plotly.express as px
 
 vehicle_data = pd.read_csv('vehicles_us.csv')
+
+def median_value(group):
+    return group.fillna(group.median())
+
+vehicle_data['model_year'] = vehicle_data.groupby('model')['model_year'].transform(median_value)
+vehicle_data['cylinders'] = vehicle_data.groupby('model')['cylinders'].transform(median_value)
+vehicle_data['odometer'] = vehicle_data.groupby('model')['odometer'].transform(median_value)
+
 new_column_names = {'price': 'Price', 'model_year': 'Model Year', 'model': 'Model', 'condition': 'Condition', 'cylinders': 'Cylinders', 'fuel': 'Fuel',
                     'odometer': 'Odometer', 'transmission': 'Transmission', 'type': 'Type', 'paint_color': 'Paint Color', 'is_4wd': 'Has 4WD', 'date_posted': 'Date Posted',
                     'days_listed': 'Days Listed'}
