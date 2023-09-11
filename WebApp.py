@@ -4,26 +4,34 @@ import plotly.express as px
 
 vehicle_data = pd.read_csv('vehicles_us.csv')
 
+#this cache stores the function, allowing the app to run more smoothly
 @st.cache_data
 def median_value(group):
     return group.fillna(group.median())
 
+#this group of code adds the median value to any NaN
 vehicle_data['model_year'] = vehicle_data.groupby('model')['model_year'].transform(median_value)
 vehicle_data['cylinders'] = vehicle_data.groupby('model')['cylinders'].transform(median_value)
 vehicle_data['odometer'] = vehicle_data.groupby('model')['odometer'].transform(median_value)
 
+#this replaces the names of the columns with more presentable ones
 new_column_names = {'price': 'Price', 'model_year': 'Model Year', 'model': 'Model', 'condition': 'Condition', 'cylinders': 'Cylinders', 'fuel': 'Fuel',
                     'odometer': 'Odometer', 'transmission': 'Transmission', 'type': 'Type', 'paint_color': 'Paint Color', 'is_4wd': 'Has 4WD', 'date_posted': 'Date Posted',
                     'days_listed': 'Days Listed'}
 vehicle_data.rename(columns=new_column_names, inplace=True)
 
+#this is the title of the web app and is displayed at the top of the page
 st.title('Vehicle Data Analysis Tool')
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
+#this is a dropdown menu that allows the user to select any column of the dataset to view as a histogram
 select_column = st.selectbox('Select a column', vehicle_data.columns)
+#checking this box will change the histogram to a scatterplot, allowing you to compare 2 different columns
 scatterplot_option = st.checkbox("Show a Scatterplot", False)
 
+#this if/else statement sets up the checkbox. If the check box isn't selected, it shows a histogram. 
+#If the checkbox IS selected, it shows a scatterplot.
 if scatterplot_option:
     st.subheader(f'Scatterplot for {select_column}')
     x_column = st.selectbox('Select x-axis column', vehicle_data.columns)
@@ -38,6 +46,7 @@ else:
     fig = px.histogram(vehicle_data, x=select_column, nbins=20, title=f"Histogram: {select_column}")
     st.plotly_chart(fig)
 
+#This will show the general statistics for the columns displayed
 st.write(f"Statistics for {select_column}:")
 
 st.write(vehicle_data[select_column].describe())
