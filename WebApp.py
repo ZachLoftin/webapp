@@ -37,7 +37,7 @@ if scatterplot_option:
     x_column = st.selectbox('Select x-axis column', vehicle_data.columns)
     y_column = st.selectbox('Select y-axis column', vehicle_data.columns)
 
-    fig = px.scatter(vehicle_data, x=x_column, y=y_column, title=f"Scatterplot: {x_column} vs {y_column}")
+    fig = px.scatter(vehicle_data, x=x_column, y=y_column, color=select_column, title=f"Scatterplot: {x_column} vs {y_column}")
     st.plotly_chart(fig)
 
 else:
