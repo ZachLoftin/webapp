@@ -22,16 +22,20 @@ new_column_names = {'price': 'Price', 'model_year': 'Model Year', 'model': 'Mode
                     'days_listed': 'Days Listed'}
 vehicle_data.rename(columns=new_column_names, inplace=True)
 
+#title for web page
 st.title('Vehicle Data Analysis Tool')
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
+#this allows us to select the car model for further analysis
 select_model = st.selectbox('Select a car model', vehicle_data['Model'].unique())
 filtered_data = vehicle_data[vehicle_data['Model'] == select_model]
 
+#this displays the individual cars of the selected models and the values on each column
 st.write('Filtered Data:')
 st.write(filtered_data)
 
+#scatterplot for the selected car model and which two columns the user wants to compare
 st.subheader('Scatterplot for selected car model')
 x_column = st.selectbox('Select x-axis column', vehicle_data.columns)
 y_column = st.selectbox('Select y-axis column', vehicle_data.columns)
@@ -39,42 +43,12 @@ y_column = st.selectbox('Select y-axis column', vehicle_data.columns)
 fig = px.scatter(filtered_data, x=x_column, y=y_column, title=f"Scatterplot: {x_column} vs {y_column}")
 st.plotly_chart(fig)
 
+#Histogram for the selected car model and the x-axis selection on the scatterplot section
 st.subheader('Histogram for selected car model')
 fig = px.histogram(filtered_data, x=x_column, nbins=20, title=f"Histogram: {x_column}")
 st.plotly_chart(fig)
 
 st.write(f"Statistics for {x_column}:")
 st.write(filtered_data[x_column].describe())
-
-#this is the title of the web app and is displayed at the top of the page
-#st.title('Vehicle Data Analysis Tool')
-
-#st.set_option('deprecation.showPyplotGlobalUse', False)
-
-#this is a dropdown menu that allows the user to select any column of the dataset to view as a histogram
-#select_column = st.selectbox('Select a column', vehicle_data.columns)
-#checking this box will change the histogram to a scatterplot, allowing you to compare 2 different columns
-#scatterplot_option = st.checkbox("Show a Scatterplot", False)
-
-#this if/else statement sets up the checkbox. If the check box isn't selected, it shows a histogram. 
-#If the checkbox IS selected, it shows a scatterplot.
-#if scatterplot_option:
-#    st.subheader(f'Scatterplot for {select_column}')
-#    x_column = st.selectbox('Select x-axis column', vehicle_data.columns)
-#    y_column = st.selectbox('Select y-axis column', vehicle_data.columns)
-
-#    fig = px.scatter(vehicle_data, x=x_column, y=y_column, color=select_column, title=f"Scatterplot: {x_column} vs {y_column}")
-#    st.plotly_chart(fig)
-
-#else:
-#    st.subheader(f"Histogram for {select_column}")
-
-#    fig = px.histogram(vehicle_data, x=select_column, nbins=20, title=f"Histogram: {select_column}")
-#    st.plotly_chart(fig)
-
-#This will show the general statistics for the columns displayed
-#st.write(f"Statistics for {select_column}:")
-
-#st.write(vehicle_data[select_column].describe())
 
 
