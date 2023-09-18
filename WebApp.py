@@ -45,8 +45,17 @@ st.plotly_chart(fig)
 
 #Histogram for the selected car model and the x-axis selection on the scatterplot section
 st.subheader('Histogram for selected car model')
-fig = px.histogram(filtered_data, x=x_column, nbins=20, title=f"Histogram: {x_column}")
-st.plotly_chart(fig)
+fig1 = px.histogram(filtered_data, x=x_column, nbins=20, title=f"Histogram: {x_column}")
+st.plotly_chart(fig1)
+
+#Scatterplot to compare two different car brands by price and odometer
+car_models = st.multiselect('Choose car models for comparison', vehicle_data['Model'].unique())
+filtered_models = vehicle_data[vehicle_data['Model'].isin(car_models)]
+
+st.subheader('Scatterplot for selected car models')
+fig2 = px.scatter(filtered_models, x='Odometer', y='Price', color='Model', title='Scatterplot: Odometer vs Price',
+                 labels={'Odometer': 'Odometer (miles)', 'Price': 'Price ($$$)'})
+st.plotly_chart(fig2)
 
 st.write(f"Statistics for {x_column}:")
 st.write(filtered_data[x_column].describe())
